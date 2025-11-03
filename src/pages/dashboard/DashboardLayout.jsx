@@ -1,13 +1,17 @@
 // src/pages/dashboard/DashboardLayout.jsx
-import React from 'react'
-import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Container, Navbar, Tab, Tabs,Nav } from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import DashboardContent from './DashboardContent' // ← IMPORTANT: make sure this exists
+import ProjectsView from '../projects/ProjectsView'
+import TasksView from '../tasks/TasksView'
+import UsersView from './users/UsersView'
 
 export default function DashboardLayout() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('dashboard')
 
   const handleLogout = () => {
     logout()
@@ -41,23 +45,40 @@ export default function DashboardLayout() {
 
       {/* Main Layout */}
       <Container fluid className="mt-4">
-        <Row>
-          {/* Sidebar */}
-          <Col md={2} className="bg-light border-end min-vh-100 p-3">
-            <h5 className="mb-3">{user?.name}</h5>
-            <Nav className="flex-column">
-              <Nav.Link href="#dashboard">Dashboard</Nav.Link>
-              <Nav.Link href="#projects">Projects</Nav.Link>
-              <Nav.Link href="#tasks">Tasks</Nav.Link>
-              <Nav.Link href="#profile">Profile</Nav.Link>
-            </Nav>
-          </Col>
-
-          {/* Main Content */}
-          <Col md={10} className="p-4">
-            <DashboardContent role={user?.role} />
-          </Col>
-        </Row>
+        <Tabs
+          activeKey={activeTab}
+          onSelect={(k) => setActiveTab(k)}
+          className="mb-3"
+        >
+          <Tab eventKey="dashboard" title="Dashboard">
+            <div className="p-4">
+              <DashboardContent role={user?.role} />
+            </div>
+          </Tab>
+          <Tab eventKey="projects" title="Projects">
+            <div className="p-4">
+              <ProjectsView />
+            </div>
+          </Tab>
+          <Tab eventKey="tasks" title="Tasks">
+            <div className="p-4">
+              <TasksView />
+            </div>
+          </Tab>
+          <Tab eventKey="users" title="Users">
+            <div className="p-4">
+              <UsersView />
+            </div>
+          </Tab>
+          <Tab eventKey="profile" title="Profile">
+            <div className="p-4">
+              {/* Profile content will go here */}
+              <div className="text-center my-5">
+                <p>Profile management coming soon...</p>
+              </div>
+            </div>
+          </Tab>
+        </Tabs>
       </Container>
     </>
   )

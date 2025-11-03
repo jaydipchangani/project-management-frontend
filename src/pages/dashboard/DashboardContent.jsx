@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import dashboardService from '../../services/dashboard.service'
 import { Spinner, Card, Row, Col, Table } from 'react-bootstrap'
-import { useAuth } from '../../contexts/AuthContext'
 
-export default function DashboardContent({ role }) {
-  const { user } = useAuth()
+export default function DashboardContent() {
   const [overview, setOverview] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
