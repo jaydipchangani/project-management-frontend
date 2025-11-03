@@ -17,21 +17,7 @@ export default function Login() {
 
     try {
       const user = await login(email, password)
-
-      // 🔽 Redirect based on user.role
-      switch (user.role) {
-        case 'Admin':
-          navigate('/dashboard/admin')
-          break
-        case 'ProjectManager':
-          navigate('/dashboard/manager')
-          break
-        case 'TeamMember':
-          navigate('/dashboard/team')
-          break
-        default:
-          navigate('/')
-      }
+      navigate('/dashboard')
     } catch (err) {
       console.error(err)
       setError(err.response?.data?.message || 'Login failed')

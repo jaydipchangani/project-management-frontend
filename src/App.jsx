@@ -2,11 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import ProtectedRoute from './components/common/ProtectedRoute'
-
-// Dashboards
-import AdminDashboard from './pages/dashboard/Admin/AdminDashboard'
-import ManagerDashboard from './pages/dashboard/Manager/ManagerDashboard'
-import TeamDashboard from './pages/dashboard/Team/TeamDashboard'
+import DashboardLayout from './pages/dashboard/DashboardLayout'
 
 function App() {
   return (
@@ -17,9 +13,7 @@ function App() {
 
       {/* Protected routes */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard/admin" element={<AdminDashboard />} />
-        <Route path="/dashboard/manager" element={<ManagerDashboard />} />
-        <Route path="/dashboard/team" element={<TeamDashboard />} />
+        <Route path="/dashboard" element={<DashboardLayout />} />
       </Route>
 
       {/* Redirect */}
