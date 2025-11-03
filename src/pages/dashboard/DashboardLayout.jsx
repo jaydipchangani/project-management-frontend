@@ -7,6 +7,8 @@ import DashboardContent from './DashboardContent' // ← IMPORTANT: make sure th
 import ProjectsView from '../projects/ProjectsView'
 import TasksView from '../tasks/TasksView'
 import UsersView from './users/UsersView'
+import { LogOut } from 'lucide-react';
+
 
 export default function DashboardLayout() {
   const { user, logout } = useAuth()
@@ -27,17 +29,16 @@ export default function DashboardLayout() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center">
-              <div className="text-white me-3">
-                <small className="d-block">Signed in as</small>
+              
+              <div className="text-white me-3 text-center">
                 <strong>{user?.name}</strong>
-              </div>
-              <div className="text-white me-3">
-                <small>Role</small>
                 <div>{user?.role}</div>
               </div>
-              <Nav.Link onClick={handleLogout} className="text-danger">
-                Logout
-              </Nav.Link>
+              <Nav.Link onClick={handleLogout} className="text-danger d-flex align-items-center">
+                Logout<LogOut size={18} className="mx-2" />
+
+                </Nav.Link>
+
             </Nav>
           </Navbar.Collapse>
         </Container>
