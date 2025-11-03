@@ -64,31 +64,54 @@ export default function DashboardLayout() {
             </Tab>
           )}
 
-          {user?.role !== 'TeamMember' && (
-            <>
-              <Tab eventKey="projects" title="Projects">
-                <div className="p-4">
-                  <ProjectsView />
+          {user?.role === 'ProjectManager' && (
+            <Tab eventKey="projects" title="Projects">
+              <div className="p-4">
+                <ProjectsView />
+              </div>
+            </Tab>
+          )}
+
+          {user?.role === 'ProjectManager' && (
+            <Tab eventKey="tasks" title="Tasks">
+              <div className="p-4">
+                <TasksView />
+              </div>
+            </Tab>
+          )}
+
+          {user?.role === 'Admin' && (
+            <Tab eventKey="projects" title="Projects">
+              <div className="p-4">
+                <ProjectsView />
+              </div>
+            </Tab>
+          )}
+
+          {user?.role === 'Admin' && (
+            <Tab eventKey="tasks" title="Tasks">
+              <div className="p-4">
+                <TasksView />
+              </div>
+            </Tab>
+          )}
+
+          {user?.role === 'Admin' && (
+            <Tab eventKey="users" title="Users">
+              <div className="p-4">
+                <UsersView />
+              </div>
+            </Tab>
+          )}
+
+          {user?.role === 'Admin' && (
+            <Tab eventKey="profile" title="Profile">
+              <div className="p-4">
+                <div className="text-center my-5">
+                  <p>Profile management coming soon...</p>
                 </div>
-              </Tab>
-              <Tab eventKey="tasks" title="Tasks">
-                <div className="p-4">
-                  <TasksView />
-                </div>
-              </Tab>
-              <Tab eventKey="users" title="Users">
-                <div className="p-4">
-                  <UsersView />
-                </div>
-              </Tab>
-              <Tab eventKey="profile" title="Profile">
-                <div className="p-4">
-                  <div className="text-center my-5">
-                    <p>Profile management coming soon...</p>
-                  </div>
-                </div>
-              </Tab>
-            </>
+              </div>
+            </Tab>
           )}
         </Tabs>
       </Container>

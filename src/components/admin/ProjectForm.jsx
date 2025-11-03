@@ -26,6 +26,8 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
           userService.getUsersByRole('ProjectManager', token),
           userService.getUsersByRole('TeamMember', token)
         ])
+        console.log("PM", pmRes);
+        console.log("TM", tmRes);
         setProjectManagers(pmRes)
         setTeamMembers(tmRes)
       } catch (err) {

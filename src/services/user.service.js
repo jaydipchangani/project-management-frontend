@@ -44,6 +44,5 @@ export default {
   getUsersByRole,
   createUser,
   updateUser,
-  deleteUser,
-  getUsersByRole
+  deleteUser
 };
