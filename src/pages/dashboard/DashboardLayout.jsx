@@ -55,29 +55,41 @@ export default function DashboardLayout() {
               <DashboardContent role={user?.role} />
             </div>
           </Tab>
-          <Tab eventKey="projects" title="Projects">
-            <div className="p-4">
-              <ProjectsView />
-            </div>
-          </Tab>
-          <Tab eventKey="tasks" title="Tasks">
-            <div className="p-4">
-              <TasksView />
-            </div>
-          </Tab>
-          <Tab eventKey="users" title="Users">
-            <div className="p-4">
-              <UsersView />
-            </div>
-          </Tab>
-          <Tab eventKey="profile" title="Profile">
-            <div className="p-4">
-              {/* Profile content will go here */}
-              <div className="text-center my-5">
-                <p>Profile management coming soon...</p>
+
+          {user?.role === 'TeamMember' && (
+            <Tab eventKey="tasks" title="Tasks">
+              <div className="p-4">
+                <TasksView />
               </div>
-            </div>
-          </Tab>
+            </Tab>
+          )}
+
+          {user?.role !== 'TeamMember' && (
+            <>
+              <Tab eventKey="projects" title="Projects">
+                <div className="p-4">
+                  <ProjectsView />
+                </div>
+              </Tab>
+              <Tab eventKey="tasks" title="Tasks">
+                <div className="p-4">
+                  <TasksView />
+                </div>
+              </Tab>
+              <Tab eventKey="users" title="Users">
+                <div className="p-4">
+                  <UsersView />
+                </div>
+              </Tab>
+              <Tab eventKey="profile" title="Profile">
+                <div className="p-4">
+                  <div className="text-center my-5">
+                    <p>Profile management coming soon...</p>
+                  </div>
+                </div>
+              </Tab>
+            </>
+          )}
         </Tabs>
       </Container>
     </>
