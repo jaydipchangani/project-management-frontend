@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import TaskList from '../../components/admin/TaskList'
 import TaskForm from '../../components/admin/TaskForm'
+import TeamMemberTaskList from '../../components/team/TeamMemberTaskList'
 
 export default function TasksView() {
   const { user } = useAuth()
@@ -28,27 +29,27 @@ export default function TasksView() {
       <h2 className="mb-4">Tasks</h2>
 
       {user?.role === 'Admin' && (
-        <TaskList
-          onEditTask={handleEditTask}
-          onCreateTask={handleCreateTask}
-          refreshTrigger={refreshTrigger}
-        />
+        <>
+          <TaskList
+            onEditTask={handleEditTask}
+            onCreateTask={handleCreateTask}
+            refreshTrigger={refreshTrigger}
+          />
+          <TaskForm
+            show={showTaskForm}
+            onHide={() => setShowTaskForm(false)}
+            task={editingTask}
+            onSuccess={handleTaskFormSuccess}
+          />
+        </>
       )}
 
-      {user?.role !== 'Admin' && (
+      {user?.role === 'TeamMember' && <TeamMemberTaskList />}
+
+      {user?.role !== 'Admin' && user?.role !== 'TeamMember' && (
         <div className="text-center my-5">
           <p>Task viewing features coming soon for your role.</p>
         </div>
-      )}
-
-      {/* Task Form Modal - only for admin */}
-      {user?.role === 'Admin' && (
-        <TaskForm
-          show={showTaskForm}
-          onHide={() => setShowTaskForm(false)}
-          task={editingTask}
-          onSuccess={handleTaskFormSuccess}
-        />
       )}
     </div>
   )
