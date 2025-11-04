@@ -9,8 +9,10 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
     description: '',
     status: 'Active',
     projectManager: '',
-    teamMembers: []
+    teamMembers: [],
+    selectedFiles: []
   })
+  const [existingFiles, setExistingFiles] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [projectManagers, setProjectManagers] = useState([])
@@ -49,16 +51,20 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
         description: project.description || '',
         status: project.status || 'Active',
         projectManager: project.projectManager?._id || '',
-        teamMembers: project.teamMembers?.map((m) => m._id) || []
+        teamMembers: project.teamMembers?.map((m) => m._id) || [],
+        selectedFiles: []
       })
+      setExistingFiles(project.files || [])
     } else {
       setFormData({
         name: '',
         description: '',
         status: 'Active',
         projectManager: '',
-        teamMembers: []
+        teamMembers: [],
+        selectedFiles: []
       })
+      setExistingFiles([])
     }
   }, [project, show])
 
@@ -77,6 +83,10 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
     setFormData((prev) => ({ ...prev, teamMembers: selected }))
   }
 
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({ ...prev, selectedFiles: Array.from(e.target.files) }))
+  }
+
   // 🔹 Handle submit
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -85,16 +95,18 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
 
     try {
       const token = localStorage.getItem('token')
-      const payload = {
-        ...formData,
-        teamMembers: formData.teamMembers || [],
-        projectManager: formData.projectManager || null
-      }
+      const data = new FormData()
+      data.append('name', formData.name)
+      data.append('description', formData.description)
+      data.append('status', formData.status)
+      data.append('projectManager', formData.projectManager || '')
+      data.append('teamMembers', JSON.stringify(formData.teamMembers || []))
+      formData.selectedFiles.forEach(file => data.append('files', file))
 
       if (project) {
-        await projectService.updateProject(project._id, payload, token)
+        await projectService.updateProject(project._id, data, token)
       } else {
-        await projectService.createProject(payload, token)
+        await projectService.createProject(data, token)
       }
 
       onSuccess()
@@ -197,6 +209,35 @@ export default function ProjectForm({ show, onHide, project, onSuccess }) {
                 </Form.Select>
                 <Form.Text className="text-muted">
                   Hold Ctrl (Windows) or Command (Mac) to select multiple members.
+                </Form.Text>
+              </Form.Group>
+
+              {/* Existing Files */}
+              {project && existingFiles.length > 0 && (
+                <Form.Group className="mb-3">
+                  <Form.Label>Existing Files</Form.Label>
+                  <ul>
+                    {existingFiles.map((file, index) => (
+                      <li key={index}>
+                        <a href={file.url} target="_blank" rel="noopener noreferrer">
+                          {file.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </Form.Group>
+              )}
+
+              {/* Files */}
+              <Form.Group className="mb-3">
+                <Form.Label>Upload Files</Form.Label>
+                <Form.Control
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                />
+                <Form.Text className="text-muted">
+                  Select multiple files to upload.
                 </Form.Text>
               </Form.Group>
             </>
