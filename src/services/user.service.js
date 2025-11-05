@@ -26,7 +26,7 @@ const createUser = async (data, token) => {
 };
 
 const updateUser = async (id, data, token) => {
-  const res = await axios.put(`${API_URL}/users/${id}/role`, data, {
+  const res = await axios.put(`${API_URL}/users/${id}`, data, {
     headers: { Authorization: `Bearer ${token}` }
   });
   return res.data;
